@@ -82,7 +82,11 @@ endfunction
 
 function! s:match_key(keymapping, key)
 	let keys = sort(keys(a:keymapping))
-	return get(filter(keys, 'a:key =~# ''^'' . v:val'), -1, '')
+	if exists("+regexpengine")
+		return get(filter(keys, 'a:key =~# ''\%#=2^'' . v:val'), -1, '')
+	else
+		return has_key(a:keymapping, a:key) ? a:key : ''
+	endif
 endfunction
 
 
